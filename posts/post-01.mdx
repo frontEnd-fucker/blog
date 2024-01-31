@@ -1,0 +1,162 @@
+---
+title: My First Post
+date: 2021-12-24
+description: Description 1
+---
+
+We are excited to announce the latest update to NextUI, version **2.2.0**! This release introduces 3 new components,
+support for client-side routing, and more.
+
+## What's New in v2.2.0?
+
+- [Client Side Routing](#client-side-routing) - Allows you to seamlessly incorporate client-side routers.
+- [Autocomplete](/docs/components/autocomplete) - Combines a text input with a listbox, allowing users to filter a list of options.
+- [Slider](/docs/components/slider) - Allows users to make selections from a range of values.
+- [Breadcrumbs](/docs/components/breadcrumbs) - Displays a hierarchy of links to the current page or resource in an application.
+- [Other Changes](#other-changes) - Includes styling improvements, accessibility and usability enhancements.
+
+<Spacer y={4} />
+
+## Client Side Routing
+
+By default, links perform native browser navigation when they are interacted with. However, many apps and
+frameworks use client side routers to avoid a full page reload when navigating between pages.
+
+NextUI now natively supports client-side routing in components such as [Link](/docs/components/link), [Tabs](/docs/components/tabs),
+[Breadcrumbs](/docs/components/breadcrumbs), [Listbox](/docs/components/listbox), [Dropdown](/docs/components/dropdown) and many others offering
+the flexibility to be rendered as HTML links, allowing you to seamlessly incorporate client-side routers. See the [Routing](/docs/guide/routing) guide to
+learn how it set it up in your app.
+
+The `NextUIProvider` component configures all NextUI components within it to navigate using the
+client side router you provide.
+
+> **Note**: Client side routing is based on [React Aria Routing](https://react-spectrum.adobe.com/react-aria/routing.html).
+
+### Next.js Example
+
+- App Router
+
+  Go to your `app/providers.tsx` or `app/providers.jsx` (create it if it doesn't exist) and add the
+  `useRouter` hook from `next/navigation`, it returns a router object that can be used to perform navigation.
+
+  ```tsx
+  // app/providers.tsx
+  "use client";
+
+  import { NextUIProvider } from "@nextui-org/react";
+
+  export function Providers({ children }: { children: React.ReactNode }) {
+    const router = useRouter();
+
+    return <NextUIProvider navigate={router.push}>{children}</NextUIProvider>;
+  }
+  ```
+
+- Pages Router
+
+  Go to pages`/_app.js` or `pages/_app.tsx` (create it if it doesn't exist) and add the`useRouter` hook
+  from `next/router`, it returns a router object that can be used to perform navigation.
+
+  ```tsx
+  // pages/_app.tsx
+  import type { AppProps } from "next/app";
+  import { useRouter } from "next/router";
+  import { NextUIProvider } from "@nextui-org/react";
+
+  function MyApp({ Component, pageProps }: AppProps) {
+    const router = useRouter();
+
+    return (
+      <NextUIProvider navigate={router.push}>
+        <Component {...pageProps} />
+      </NextUIProvider>
+    );
+  }
+
+  export default MyApp;
+  ```
+
+- Usage
+
+  Now that you have set up the `NextUIProvider` in your app, you can use the `href` prop in the `Tabs`,
+  `Listbox` and `Dropdown` items to navigate between pages.
+
+  The [Link](/docs/components/link) component will also use the `navigate` function from the
+  `NextUIProvider` to navigate between pages.
+
+  ```jsx
+  import {
+    Tabs,
+    Tab,
+    Listbox,
+    ListboxItem,
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownItem,
+    Button,
+    Link,
+  } from "@nextui-org/react";
+
+  function App() {
+    return (
+      <>
+        <Tabs aria-label="Navigation">
+          <Tab key="home" href="/home">
+            Home
+          </Tab>
+          <Tab key="about" href="/about">
+            About
+          </Tab>
+        </Tabs>
+        <Listbox aria-label="Navigation">
+          <ListboxItem key="home" href="/home">
+            Home
+          </ListboxItem>
+          <ListboxItem key="about" href="/about">
+            About
+          </ListboxItem>
+        </Listbox>
+        <Dropdown>
+          <DropdownTrigger>
+            <Button>Open</Button>
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Navigation">
+            <DropdownItem key="home" href="/home">
+              Home
+            </DropdownItem>
+            <DropdownItem key="about" href="/about">
+              About
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+        <Link href="/home">Home</Link>
+        <Link href="/about">About</Link>
+      </>
+    );
+  }
+  ```
+
+<Spacer y={4} />
+
+## Autocomplete
+
+Creating an autocomplete component that is both accessible and customizable is a challenging task. We've spent a lot of time
+researching and testing different approaches to come up with a solution that works for everyone. The result is a
+component that is easy to use, fully accessible, and highly customizable.
+
+The new **Autocomplete** component includes:
+
+- Support for selecting a single option.
+- Support for disabled options.
+- Support for groups of items in sections.
+- Support for filtering a list of options by typing.
+- Support for controlled and uncontrolled options, selection and input value.
+- Support for custom filter functions.
+- Async loading and infinite scrolling support.
+- Required and invalid states exposed to assistive technology via ARIA.
+- Support for description and error message help text linked to the input via ARIA.
+- And much more...
+
+We recommend to read this [Blog post](https://react-spectrum.adobe.com/blog/building-a-combobox.html) from [react-aria](https://react-spectrum.adobe.com/react-aria) team to learn more
+about the Autocomplete component.
