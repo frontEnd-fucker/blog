@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   if (!post) notFound();
 
   return (
-    <div className="prose container mx-auto py-10 w-full max-w-4xl dark:prose-invert">
+    <div className="container prose mx-auto w-full max-w-4xl py-10 dark:prose-invert">
       {/* Some code ... */}
       <MDXContent code={post.body.code} />
     </div>
