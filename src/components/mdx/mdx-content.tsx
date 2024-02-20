@@ -55,18 +55,22 @@ const isHighlight = (meta: string) => {
   }
 
   const highlightLineNumStr = RE.exec(meta)![1];
-  const [start, end] = highlightLineNumStr
-    .split("-")
-    .map((v) => parseInt(v, 10));
 
   return (lineNum: number) => {
-    return end ? lineNum >= start && lineNum <= end : lineNum === start;
+    const inRange = highlightLineNumStr
+      .split(",")
+      .map((v) => v.split("-").map((x) => parseInt(x, 10)))
+      .some(([start, end]) => {
+        return end ? lineNum >= start && lineNum <= end : lineNum === start;
+      });
+
+    return inRange;
   };
 };
 
 const Code = ({
   children,
-  className,
+  className = "",
   meta,
 }: {
   children: ReactNode;
@@ -75,7 +79,9 @@ const Code = ({
 }) => {
   const codeString = String(children).trim();
   const isMultiLine = codeString.split("\n").length > 2;
-  const lang = className?.replace("language-", "") ?? "tsx";
+
+  const [langStr, filename] = className?.split(":");
+  const lang = langStr?.replace("language-", "") ?? "tsx";
   const shouldHighlight = isHighlight(meta);
 
   if (!isMultiLine) {
@@ -83,27 +89,32 @@ const Code = ({
   }
 
   return (
-    <Highlight theme={themes.vsDark} code={codeString} language={lang}>
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre style={style} className="not-prose p-4">
-          {tokens.map((line, i) => (
-            <div
-              key={i}
-              {...getLineProps({ line })}
-              className={clsx({
-                "bg-gradient-to-r from-blue-500/20 to-transparent":
-                  shouldHighlight(i + 1),
-              })}
-            >
-              <span className="mr-4 text-slate-300">{i + 1}</span>
-              {line.map((token, key) => (
-                <span key={key} {...getTokenProps({ token })} />
-              ))}
-            </div>
-          ))}
-        </pre>
+    <div>
+      {filename && (
+        <h2 className="not-prose px-4 py-1 text-sky-400">{filename}</h2>
       )}
-    </Highlight>
+      <Highlight theme={themes.vsDark} code={codeString} language={lang}>
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre style={style} className="not-prose p-4">
+            {tokens.map((line, i) => (
+              <div
+                key={i}
+                {...getLineProps({ line })}
+                className={clsx({
+                  "bg-gradient-to-r from-blue-500/20 to-transparent":
+                    shouldHighlight(i + 1),
+                })}
+              >
+                <span className="mr-4 text-slate-300">{i + 1}</span>
+                {line.map((token, key) => (
+                  <span key={key} {...getTokenProps({ token })} />
+                ))}
+              </div>
+            ))}
+          </pre>
+        )}
+      </Highlight>
+    </div>
   );
 };
 

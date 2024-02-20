@@ -45,8 +45,7 @@ client side router you provide.
   Go to your `app/providers.tsx` or `app/providers.jsx` (create it if it doesn't exist) and add the
   `useRouter` hook from `next/navigation`, it returns a router object that can be used to perform navigation.
 
-  ```tsx
-  // app/providers.tsx
+  ```tsx:app/providers.tsx {3-5,8}
   "use client";
 
   import { NextUIProvider } from "@nextui-org/react";
@@ -63,7 +62,7 @@ client side router you provide.
   Go to pages`/_app.js` or `pages/_app.tsx` (create it if it doesn't exist) and add the`useRouter` hook
   from `next/router`, it returns a router object that can be used to perform navigation.
 
-  ```tsx {2-3}
+  ```tsx {3-4}
   // pages/_app.tsx
   import type { AppProps } from "next/app";
   import { useRouter } from "next/router";
