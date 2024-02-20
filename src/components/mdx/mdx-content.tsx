@@ -5,6 +5,7 @@ import type { MDXComponents } from "mdx/types";
 import { clsx } from "@nextui-org/shared-utils";
 import { ReactNode } from "react";
 import { Highlight, themes } from "prism-react-renderer";
+import { Sandpack } from "@/components/sandpack";
 
 export interface LinkedHeadingProps {
   as: keyof JSX.IntrinsicElements;
@@ -46,20 +47,54 @@ const LinkedHeading: React.FC<LinkedHeadingProps> = ({
   );
 };
 
-const Code = ({ children }: { children: ReactNode }) => {
+const isHighlight = (meta: string) => {
+  const RE = /{([\d,-]+)}/;
+
+  if (!meta || !RE.test(meta)) {
+    return () => false;
+  }
+
+  const highlightLineNumStr = RE.exec(meta)![1];
+  const [start, end] = highlightLineNumStr
+    .split("-")
+    .map((v) => parseInt(v, 10));
+
+  return (lineNum: number) => {
+    return end ? lineNum >= start && lineNum <= end : lineNum === start;
+  };
+};
+
+const Code = ({
+  children,
+  className,
+  meta,
+}: {
+  children: ReactNode;
+  className?: string;
+  meta: string;
+}) => {
   const codeString = String(children).trim();
   const isMultiLine = codeString.split("\n").length > 2;
+  const lang = className?.replace("language-", "") ?? "tsx";
+  const shouldHighlight = isHighlight(meta);
 
   if (!isMultiLine) {
     return <code className="text-sky-600">{codeString}</code>;
   }
 
   return (
-    <Highlight theme={themes.vsDark} code={codeString} language="tsx">
+    <Highlight theme={themes.vsDark} code={codeString} language={lang}>
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre style={style} className="not-prose p-4">
           {tokens.map((line, i) => (
-            <div key={i} {...getLineProps({ line })}>
+            <div
+              key={i}
+              {...getLineProps({ line })}
+              className={clsx({
+                "bg-gradient-to-r from-blue-500/20 to-transparent":
+                  shouldHighlight(i + 1),
+              })}
+            >
               <span className="mr-4 text-slate-300">{i + 1}</span>
               {line.map((token, key) => (
                 <span key={key} {...getTokenProps({ token })} />
@@ -87,6 +122,7 @@ const mdxComponents = {
     <LinkedHeading as="h4" {...props} />
   ),
   code: Code,
+  Sandpack,
 } as unknown as Record<string, React.ReactNode>;
 
 const MDXContent = ({ code }: { code: string }) => {

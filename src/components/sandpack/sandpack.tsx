@@ -1,29 +1,37 @@
 import { Sandpack } from "@codesandbox/sandpack-react";
-import { tailwindConfig, postcssConfig, stylesConfig } from "./config-file";
+import {
+  tailwindConfig,
+  postcssConfig,
+  stylesConfig,
+  viteConfig,
+} from "./config-file";
 
 const customSetup = {
   dependencies: {
-    "@nextui-org/react": "latest",
     "framer-motion": "^10.12.16",
     autoprefixer: "^10.4.14",
     postcss: "^8.4.21",
     tailwindcss: "^3.2.7",
+    "@nextui-org/react": "^2.2.9",
   },
   devDependencies: {},
 };
 
 const configFiles = {
-  "tailwind.config.ts": {
+  "tailwind.config.js": {
     code: tailwindConfig,
-    hidden: true,
+    // hidden: true,
   },
   "postcss.config.js": {
     code: postcssConfig,
-    hidden: true,
+    // hidden: true,
   },
   "styles.css": {
     code: stylesConfig,
-    hidden: true,
+    // hidden: true,
+  },
+  "vite.config.ts": {
+    code: viteConfig,
   },
 };
 
@@ -31,7 +39,9 @@ export interface CustomSandpackProps {
   codeFiles: Record<string, string>;
 }
 
-const CustomSandpack: React.FC<CustomSandpackProps> = ({ codeFiles }) => {
+export const CustomSandpack: React.FC<CustomSandpackProps> = ({
+  codeFiles,
+}) => {
   const files = {
     ...codeFiles,
     ...configFiles,

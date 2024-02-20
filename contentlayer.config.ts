@@ -1,4 +1,5 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
+import { visit } from "unist-util-visit";
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
@@ -18,4 +19,18 @@ export const Post = defineDocumentType(() => ({
   },
 }));
 
-export default makeSource({ contentDirPath: "posts", documentTypes: [Post] });
+export default makeSource({
+  contentDirPath: "posts",
+  documentTypes: [Post],
+  mdx: {
+    rehypePlugins: [
+      () => (tree: any) => {
+        visit(tree, "element", (node) => {
+          if (node.tagName === "code" && node.data?.meta) {
+            node.properties.meta = node.data.meta;
+          }
+        });
+      },
+    ],
+  },
+});

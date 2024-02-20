@@ -4,10 +4,16 @@ date: 2021-12-24
 description: Description 1
 ---
 
+import { app } from "@/demo/test";
+
 <img src="/next.svg" />
 
 We are excited to announce the latest update to NextUI, version **2.2.0**! This release introduces 3 new components,
 support for client-side routing, and more.
+
+## Sandpack demo
+
+<Sandpack codeFiles={{ "App.tsx": app }} />
 
 ## What's New in v2.2.0?
 
@@ -16,8 +22,6 @@ support for client-side routing, and more.
 - [Slider](/docs/components/slider) - Allows users to make selections from a range of values.
 - [Breadcrumbs](/docs/components/breadcrumbs) - Displays a hierarchy of links to the current page or resource in an application.
 - [Other Changes](#other-changes) - Includes styling improvements, accessibility and usability enhancements.
-
-<Spacer y={4} />
 
 ## Client Side Routing
 
@@ -59,7 +63,7 @@ client side router you provide.
   Go to pages`/_app.js` or `pages/_app.tsx` (create it if it doesn't exist) and add the`useRouter` hook
   from `next/router`, it returns a router object that can be used to perform navigation.
 
-  ```tsx
+  ```tsx {2-3}
   // pages/_app.tsx
   import type { AppProps } from "next/app";
   import { useRouter } from "next/router";
@@ -138,8 +142,6 @@ client side router you provide.
     );
   }
   ```
-
-<Spacer y={4} />
 
 ## Autocomplete
 

@@ -1,22 +1,56 @@
-export const tailwindConfig = `
-  import type { Config } from "tailwindcss";
-  import { nextui } from "@nextui-org/react";
+export const viteConfig = `
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "tailwindcss";
 
-  const config: Config = {
-    content: [
-      "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-      "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-      "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-      "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
-    ],
-    theme: {
-      extend: {
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  css: {
+    postcss: {
+      plugins: [tailwindcss],
+    },
+  },
+});
+`;
+
+export const tailwindConfig = `const { nextui } = require("@nextui-org/react");
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./index.html",
+    "./*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    colors: {
+      red: "black",
+      blue: {
+        500: "red",
       },
     },
-    plugins: [nextui()],
-  };
-  export default config;
-`;
+    extend: {},
+  },
+  darkMode: "class",
+  plugins: [nextui()],
+};`;
+
+export const tailwindConfig1 = `const { nextui } = require("@nextui-org/react");
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./index.html",
+    "./*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  darkMode: "class",
+  plugins: [nextui()],
+};`;
 
 export const stylesConfig = `
   @tailwind base;
