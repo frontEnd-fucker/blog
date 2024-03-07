@@ -2,6 +2,8 @@ import Link from "next/link";
 import { compareDesc, format, parseISO } from "date-fns";
 import { allPosts, Post } from "contentlayer/generated";
 import { ThreeDCardDemo } from "@/components/hero";
+import { Suspense } from "react";
+import { TestSuspense } from "@/components/test-suspense";
 
 function PostCard(post: Post) {
   return (
@@ -33,6 +35,9 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-xl py-8">
       <ThreeDCardDemo />
+      <Suspense fallback={<div>loading...</div>}>
+        <TestSuspense />
+      </Suspense>
       <h1 className="mb-8 text-center text-2xl font-black">
         Next.js + Contentlayer Example
       </h1>
