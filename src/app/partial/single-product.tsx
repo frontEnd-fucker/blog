@@ -2,8 +2,12 @@ import Image from "next/image";
 import type { Product } from "@/types/product";
 
 export default async function SingleProduct() {
+  // const product: Product = await fetch(
+  //   `${process.env.NEXT_PUBLIC_API_URL}/api/product`,
+  // ).then((res) => res.json());
+
   const product: Product = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/product`,
+    `https://app-router-api.vercel.app/api/products?id=1`,
   ).then((res) => res.json());
 
   return (
