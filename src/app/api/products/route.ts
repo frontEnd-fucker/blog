@@ -93,10 +93,17 @@ const products = [
   },
 ];
 
-export async function GET() {
-  const now = Date.now();
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const searchParams = new URLSearchParams(url.search);
+  const id = searchParams.get("id");
 
-  while (Date.now() - now < 5000) {}
+  if (id) {
+    return Response.json(products[0]);
+  }
+
+  const now = Date.now();
+  while (Date.now() - now < 3000) {}
 
   return Response.json(products);
 }
