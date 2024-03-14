@@ -93,6 +93,8 @@ const products = [
   },
 ];
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
@@ -102,8 +104,7 @@ export async function GET(request: Request) {
     return Response.json(products[0]);
   }
 
-  const now = Date.now();
-  while (Date.now() - now < 3000) {}
+  await sleep(3000);
 
   return Response.json(products);
 }
