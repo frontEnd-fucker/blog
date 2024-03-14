@@ -3,7 +3,7 @@ import type { Product } from "@/types/product";
 
 export default async function SingleProduct() {
   const product: Product = await fetch(
-    "http://localhost:3000/api/product",
+    `${process.env.NEXT_PUBLIC_API_URL}/api/product`,
   ).then((res) => res.json());
 
   return (
