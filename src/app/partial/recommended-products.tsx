@@ -1,5 +1,6 @@
 import { Product } from "@/types/product";
 import { headers } from "next/headers";
+import Image from "next/image";
 
 export default async function RecommendedProducts() {
   headers();
@@ -27,7 +28,16 @@ export default async function RecommendedProducts() {
       <div className="grid grid-cols-4 gap-4">
         {products.map((product) => {
           return (
-            <div key={product.id} className="col-span-1">
+            <div key={product.id} className="col-span-1 space-y-2">
+              <div className="relative aspect-square">
+                <Image
+                  className="rounded-xl"
+                  src={`/${product.image}`}
+                  sizes="50vw"
+                  alt={product.name}
+                  fill
+                />
+              </div>
               <p>{product.name}</p>
               <p>{product.description}</p>
             </div>
