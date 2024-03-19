@@ -8,7 +8,7 @@ import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
-export function AddToCartBtn() {
+export default function AddToCart() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -33,16 +33,6 @@ export function AddToCartBtn() {
       >
         Add To Cart
       </Button>
-    </div>
-  );
-}
-
-export default function AddToCart() {
-  return (
-    <div>
-      <CartCountProvider>
-        <AddToCartBtn />
-      </CartCountProvider>
     </div>
   );
 }

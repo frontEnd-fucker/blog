@@ -24,19 +24,21 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <Navbar isBordered>
-            <NavbarItem>
-              <Link color="foreground" href="/">
-                Home
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link color="foreground" href="/partial">
-                Partial Render
-              </Link>
-            </NavbarItem>
-          </Navbar>
-          {children}
+          <main className="dark">
+            <Navbar isBordered>
+              <NavbarItem>
+                <Link color="foreground" href="/">
+                  Home
+                </Link>
+              </NavbarItem>
+              <NavbarItem>
+                <Link color="foreground" href="/partial">
+                  Partial Render
+                </Link>
+              </NavbarItem>
+            </Navbar>
+            {children}
+          </main>
         </Providers>
       </body>
     </html>
