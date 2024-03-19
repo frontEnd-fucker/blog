@@ -7,7 +7,7 @@ export default async function RecommendedProducts() {
   headers();
 
   const products: Product[] = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/products`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/products?delay=3000&filter=1`,
     {
       // We intentionally disable Next.js Cache to better demo
       // streaming

@@ -5,7 +5,7 @@ export default async function Review() {
   const reviews: Review[] = await fetch(
     // We intentionally delay the response to simulate a slow data
     // request that would benefit from streaming
-    `${process.env.NEXT_PUBLIC_API_URL}/api/reviews?delay=${3000}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/reviews?delay=${4000}`,
     {
       // We intentionally disable Next.js Cache to better demo
       // streaming
