@@ -26,9 +26,7 @@ export default async function SingleProduct() {
 
         <div className="col-span-1">
           <div className="rounded-lg bg-gray-900 p-3">
-            <CartCountProvider>
-              <AddToCart />
-            </CartCountProvider>
+            <AddToCart />
           </div>
         </div>
       </div>

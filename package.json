@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.6.4",
+    "@heroicons/react": "^2.1.1",
     "@nextui-org/react": "^2.2.9",
     "@prisma/client": "^5.10.2",
     "clsx": "^2.1.0",
