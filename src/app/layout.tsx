@@ -26,16 +26,23 @@ export default function RootLayout({
         <Providers>
           <main className="dark">
             <Navbar isBordered>
-              <NavbarItem>
-                <Link color="foreground" href="/">
-                  Home
-                </Link>
-              </NavbarItem>
-              <NavbarItem>
-                <Link color="foreground" href="/partial">
-                  Partial Render
-                </Link>
-              </NavbarItem>
+              <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+                <NavbarItem>
+                  <Link color="foreground" href="/">
+                    Home
+                  </Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Link color="foreground" href="/partial">
+                    Partial Render
+                  </Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Link color="foreground" href="/issue">
+                    Issue
+                  </Link>
+                </NavbarItem>
+              </NavbarContent>
             </Navbar>
             {children}
           </main>

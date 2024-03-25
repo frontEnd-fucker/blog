@@ -1,7 +1,13 @@
 "use client";
 
 import { NextUIProvider } from "@nextui-org/react";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <NextUIProvider>{children}</NextUIProvider>;
+  const queryClient = new QueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <NextUIProvider>{children}</NextUIProvider>
+    </QueryClientProvider>
+  );
 }
