@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input, Textarea } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import React, { useState } from "react";
 import { useForm, type SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,9 +8,13 @@ import { issueSchema } from "@/app/api/issue/schema";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import axios, { AxiosError } from "axios";
-import SimpleMDE from "react-simplemde-editor";
+import axios from "axios";
 import "easymde/dist/easymde.min.css";
+import dynamic from "next/dynamic";
+
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 
 type Inputs = z.infer<typeof issueSchema>;
 
