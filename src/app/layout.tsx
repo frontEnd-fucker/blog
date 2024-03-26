@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <main className="dark">
+          <main className="h-full dark">
             <Navbar isBordered>
               <NavbarContent className="hidden gap-4 sm:flex" justify="center">
                 <NavbarItem>
