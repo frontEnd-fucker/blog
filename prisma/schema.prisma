@@ -57,3 +57,39 @@ enum Status {
   IN_PROCESS
   CLOSED
 }
+
+// trello
+model Board {
+  id       Int       @id @default(autoincrement())
+  title    String
+  subjects Subject[]
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Subject {
+  id       Int    @id @default(autoincrement())
+  title    String
+  position Int
+
+  boardId Int
+  board   Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  cards Card[]
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Card {
+  id       String @id @default(uuid())
+  title    String
+  position Int
+
+  subjectId Int
+  subject   Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}

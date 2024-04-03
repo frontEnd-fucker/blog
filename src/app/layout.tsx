@@ -1,6 +1,3 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { Providers } from "./providers";
 import {
   Navbar,
   NavbarBrand,
@@ -9,6 +6,10 @@ import {
   Link,
   Button,
 } from "@nextui-org/react";
+import type { Metadata } from "next";
+
+import "./globals.css";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -40,6 +41,11 @@ export default function RootLayout({
                 <NavbarItem>
                   <Link color="foreground" href="/issue">
                     Issue
+                  </Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Link color="foreground" href="/trello">
+                    Trello
                   </Link>
                 </NavbarItem>
               </NavbarContent>
