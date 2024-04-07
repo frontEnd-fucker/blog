@@ -9,8 +9,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
-import { toast } from 'sonner';
 
 type Inputs = z.infer<typeof cardSchema>;
 
@@ -34,8 +34,7 @@ const CardForm = ({ subjectId }: CardFormProps) => {
       return axios.post("/api/trello/card", newCard);
     },
     onSuccess() {
-      // router.replace("/issue");
-      toast.success('Card created!')
+      toast.success("Card created!");
       router.refresh();
     },
     onError(error) {

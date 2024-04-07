@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  revalidatePath(`/trello/${subjectId}`);
+  revalidatePath(`/trello/1`);
 
   return Response.json(newCard);
 }

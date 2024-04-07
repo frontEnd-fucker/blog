@@ -27,8 +27,14 @@ const reorder = <T,>(items: T[], sourceIdx: number, destIdx: number) => {
 
 const SubjectList = ({ data }: { data: ListWithCards[] }) => {
   const [orderedData, setOrderedData] = useState(data);
+  const [preData, setPreData] = useState(data);
 
-  const { mutate: updateOrder } = useMutation({
+  if (data !== preData) {
+    setOrderedData(data);
+    setPreData(data);
+  }
+
+  const { mutate: updateSubjectOrder } = useMutation({
     mutationFn: (newItems: ListWithCards[]) => {
       return axios.put("/api/trello/subject", newItems);
     },
@@ -37,18 +43,95 @@ const SubjectList = ({ data }: { data: ListWithCards[] }) => {
     },
   });
 
+  const { mutate: updataCardOrder } = useMutation({
+    mutationFn: (newItems: Card[]) => {
+      return axios.put("/api/trello/card-order", newItems);
+    },
+    onSuccess: () => {
+      toast.success("Cards reordered!");
+    },
+  });
+
   const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
+    const { source, destination } = result;
 
-    if (result.destination.index === result.source.index) return;
+    if (!destination) return;
 
-    const reorderData = reorder(
-      orderedData,
-      result.source.index,
-      result.destination.index,
-    ).map((item, idx) => ({ ...item, position: idx }));
-    setOrderedData(reorderData);
-    updateOrder(reorderData);
+    // if dropped in the same position
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    if (result.type === "list") {
+      const reorderData = reorder(
+        orderedData,
+        source.index,
+        destination.index,
+      ).map((item, idx) => ({ ...item, position: idx }));
+      setOrderedData(reorderData);
+      updateSubjectOrder(reorderData);
+    }
+
+    if (result.type === "card") {
+      const newOrderData = [...orderedData];
+
+      const sourceList = newOrderData.find(
+        (list) => list.id.toString() === source.droppableId,
+      );
+      const destList = newOrderData.find(
+        (list) => list.id.toString() === destination.droppableId,
+      );
+
+      if (!sourceList || !destList) {
+        return;
+      }
+
+      // Check if cards exists on the sourceList
+      if (!sourceList.cards) {
+        sourceList.cards = [];
+      }
+
+      // Check if cards exists on the destList
+      if (!destList.cards) {
+        destList.cards = [];
+      }
+
+      // move in the same list
+      if (source.droppableId === destination.droppableId) {
+        const reroderCards = reorder(
+          sourceList.cards,
+          source.index,
+          destination.index,
+        );
+
+        reroderCards.forEach((card, idx) => {
+          card.position = idx;
+        });
+
+        sourceList.cards = reroderCards;
+
+        setOrderedData(newOrderData);
+        updataCardOrder(sourceList.cards);
+      } else {
+        // move into other list
+        const [movedCard] = sourceList.cards.splice(source.index, 1);
+
+        movedCard.subjectId = destList.id;
+
+        destList.cards.splice(destination.index, 0, movedCard);
+
+        // Update the order for each card in the destination list
+        destList.cards.forEach((card, idx) => {
+          card.position = idx;
+        });
+
+        setOrderedData(newOrderData);
+        updataCardOrder(destList.cards);
+      }
+    }
   };
 
   return (
@@ -74,18 +157,41 @@ const SubjectList = ({ data }: { data: ListWithCards[] }) => {
                     // key={subject.id}
                     className="bg-slate-400/80 rounded-lg transition p-2 h-fit space-y-2"
                   >
-                    <EditableTitle title={subject.title} />
+                    <EditableTitle
+                      title={subject.title}
+                      subjectId={subject.id}
+                    />
 
-                    <div className="space-y-2">
-                      {subject.cards.map((card) => (
+                    <Droppable droppableId={subject.id.toString()} type="card">
+                      {(provided) => (
                         <div
-                          key={card.id}
-                          className="bg-white p-2 rounded-lg truncate cursor-pointer"
+                          className="flex flex-col gap-y-2"
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
                         >
-                          {card.title}
+                          {subject.cards.map((card, index) => (
+                            <Draggable
+                              draggableId={card.id}
+                              index={index}
+                              key={card.id}
+                            >
+                              {(provided) => (
+                                <div
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  ref={provided.innerRef}
+                                  key={card.id}
+                                  className="bg-white p-2 rounded-lg truncate cursor-pointer"
+                                >
+                                  {card.title}
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+                          {provided.placeholder}
                         </div>
-                      ))}
-                    </div>
+                      )}
+                    </Droppable>
 
                     <CardForm subjectId={subject.id} />
                   </li>

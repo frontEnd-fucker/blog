@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 
-import { subjectSchema } from "./schema";
+import { subjectSchema, updateSubjectSchema } from "./schema";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -26,6 +26,30 @@ export async function POST(request: Request) {
       title,
       boardId,
       position: newPosition,
+    },
+  });
+
+  return Response.json(newSubject);
+}
+
+export async function PUT(request: Request) {
+  const body = await request.json();
+
+  const validation = updateSubjectSchema.safeParse(body);
+
+  if (!validation.success) {
+    return Response.json(validation.error.format(), { status: 400 });
+  }
+
+  const { title, boardId, id } = validation.data;
+
+  const newSubject = await db.subject.update({
+    where: {
+      id,
+      boardId,
+    },
+    data: {
+      title,
     },
   });
 
