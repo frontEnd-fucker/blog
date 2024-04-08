@@ -6,6 +6,7 @@ import {
   Link,
   Button,
 } from "@nextui-org/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 
 import "./globals.css";
@@ -51,6 +52,7 @@ export default function RootLayout({
               </NavbarContent>
             </Navbar>
             {children}
+            <SpeedInsights />
           </main>
         </Providers>
       </body>
