@@ -1,6 +1,7 @@
 "use client";
 
 import { issueSchema } from "@/app/api/issue/schema";
+import http from "@/lib/http";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
 import { useMutation } from "@tanstack/react-query";
@@ -33,7 +34,7 @@ const Create = () => {
 
   const { mutate: createIssue, isPending } = useMutation({
     mutationFn(newIssue: Inputs) {
-      return axios.post("/api/issue", newIssue);
+      return http.post("/api/issue", newIssue);
     },
     onSuccess() {
       router.replace("/issue");

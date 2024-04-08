@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+
 import { issueSchema } from "./schema";
 
 export async function POST(request: Request) {
@@ -7,7 +8,13 @@ export async function POST(request: Request) {
   const validation = issueSchema.safeParse(body);
 
   if (!validation.success) {
-    return Response.json(validation.error.format(), { status: 400 });
+    return Response.json(
+      {
+        fieldErrors: validation.error.flatten().fieldErrors,
+        message: "i am wrong",
+      },
+      { status: 400 },
+    );
   }
 
   const newIssue = await db.issue.create({
